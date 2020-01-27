@@ -10,10 +10,11 @@ const LessonSchema = new mongoose.Schema({
     teacher: {
         type: mongoose.mongo.ObjectId,
         ref: "Teacher",
+        default: null,
     },
     name: {
         type: String,
-        default: "Charac",
+        default: "Lesson",
     },
     maxStudentsNumber: {
         type: Number,

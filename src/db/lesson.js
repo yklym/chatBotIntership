@@ -1,7 +1,7 @@
 const LessonModel = require('../models/lessonModel');
 
 class Lesson {
-    constructor(name = "", teacher = -1, students = [], maxStudentsNumber = 20, lessonNumber = 1) {
+    constructor({ name = "", teacher = null, students = [], maxStudentsNumber = 20, lessonNumber = 0 }) {
         this.name = name;
         this.teacher = teacher;
         this.students = students;
@@ -10,10 +10,15 @@ class Lesson {
     }
 
     static insert(lesson) {
+        if (!lesson) {
+            // do smth
+            return new Error("");
+        }
         return new LessonModel(lesson).save();
     }
 
     static update(id, newObj) {
+        console.log(newObj);
         return LessonModel.findByIdAndUpdate(id, newObj);
     }
 
