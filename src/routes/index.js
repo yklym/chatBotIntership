@@ -1,10 +1,13 @@
 const express = require("express");
+
 const router = express.Router();
-router.use(express.json()); //Used to parse JSON bodies
+router.use(express.json());
 
 
 const lessonsRoute = require("./lesson/lesson.js");
+
 router.use("/lessons", lessonsRoute);
+
 
 
 // -----------------------------------------

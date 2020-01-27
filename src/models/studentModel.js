@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-
-let StudentSchema = new Schema({
+const StudentSchema = new mongoose.Schema({
     login: {
         type: String,
         required: true,
@@ -13,11 +11,11 @@ let StudentSchema = new Schema({
     },
     grade: {
         type: Number,
-        default: 1
+        default: 1,
     },
     fullname: {
         type: String,
-        default: "-"
+        default: "-",
     },
     lessons: {
         type: [mongoose.mongo.ObjectId],

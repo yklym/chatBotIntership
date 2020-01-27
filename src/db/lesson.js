@@ -1,4 +1,4 @@
-const LessonMode = require('../models/lessonModel');
+const LessonModel = require('../models/lessonModel');
 
 class Lesson {
     constructor(name = "", teacher = -1, students = [], maxStudentsNumber = 20, lessonNumber = 1) {
@@ -11,17 +11,16 @@ class Lesson {
 
     static insert(lesson) {
         return new LessonModel(lesson).save();
-        
     }
+
     static update(id, newObj) {
         return LessonModel.findByIdAndUpdate(id, newObj);
     }
 
     static getAll() {
         return LessonModel.find().sort({
-            created: -1
+            created: -1,
         });
-
     }
 
     static getById(id) {

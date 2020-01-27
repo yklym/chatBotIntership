@@ -1,9 +1,7 @@
 // const myShemas = require("./mongoShemas");
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-let LessonSchema = new Schema({
-    //this.titleId = titleId;
+const LessonSchema = new mongoose.Schema({
     students: {
         type: [mongoose.mongo.ObjectId],
         ref: "Student",
@@ -15,7 +13,7 @@ let LessonSchema = new Schema({
     },
     name: {
         type: String,
-        default: "Charac"
+        default: "Charac",
     },
     maxStudentsNumber: {
         type: Number,
@@ -23,10 +21,10 @@ let LessonSchema = new Schema({
     },
     lessonNumber: {
         type: Number,
-        default: 1
+        default: 1,
     },
 });
-const LessonModel = mongoose.model('Lesson', LessonSchema);
 
+const LessonModel = mongoose.model('Lesson', LessonSchema);
 
 module.exports = LessonModel;
