@@ -1,13 +1,17 @@
 const mongoose = require('mongoose');
 
 const StudentSchema = new mongoose.Schema({
-    grade: {
-        type: Number,
-        default: 1,
-    },
     fullname: {
         type: String,
         default: "-",
+    },
+    age: {
+        type: Number,
+        default: 0,
+    },
+    mark: {
+        type: Number,
+        default: 0,
     },
     lessons: {
         type: [mongoose.mongo.ObjectId],

@@ -14,11 +14,10 @@ const TeacherSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        unique: true,
     },
     age: {
         type: Number,
-        default: -1,
+        default: 0,
     },
     role: {
         type: Number,

@@ -1,12 +1,22 @@
 const express = require("express");
+const passport = require("passport");
 const Teacher = require("../../db/teacher.js");
-const { checkIdParam, sha512 } = require("../../utils.js");
+const { checkIdParam } = require("../../utils.js");
+const { checkTeacher, checkHeadTeacher } = require("../../auth/basic.js");
 
 const router = express.Router();
 router.use(express.json());
 
+router.get("/me", passport.authenticate('basic', { session: false }), checkTeacher, (req, res) => {
+    Teacher.findByUsername(req.user.username).then(teacher => {
+        // TODO delete odd fields e.g. _v, _id, password
+        res.status(200).json(teacher);
+    }).catch(err => {
+        res.status(500).json(err);
+    });
+});
 
-router.get("/", (req, res) => {
+router.get("/", passport.authenticate('basic', { session: false }), checkHeadTeacher, (req, res) => {
     Teacher.getAll().then(teachers => {
         res.status(200).json(teachers);
     }).catch(err => {
@@ -14,7 +24,8 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get('/:id', checkIdParam, (req, res) => {
+// ------------------------------------------------ CHeck Id
+router.get('/:id', checkIdParam, passport.authenticate('basic', { session: false }), checkHeadTeacher, (req, res) => {
     const id = req.params.id;
     Teacher.getById(id).then(teacher => {
         res.status(200).json(teacher);
@@ -23,7 +34,7 @@ router.get('/:id', checkIdParam, (req, res) => {
     });
 });
 
-router.delete("/:id", checkIdParam, (req, res) => {
+router.delete("/:id", checkIdParam, passport.authenticate('basic', { session: false }), checkHeadTeacher, (req, res) => {
     const id = req.params.id;
     Teacher.deleteById(id).then(teacher => {
         res.status(200).json(teacher);
@@ -32,7 +43,7 @@ router.delete("/:id", checkIdParam, (req, res) => {
     });
 });
 
-router.patch('/:id', checkIdParam, (req, res) => {
+router.patch('/:id', checkIdParam, passport.authenticate('basic', { session: false }), checkHeadTeacher, (req, res) => {
     const id = req.params.id;
     Teacher.update(id, req.body).then(resTeach => {
         res.status(201).json(resTeach);
@@ -42,14 +53,19 @@ router.patch('/:id', checkIdParam, (req, res) => {
     });
 });
 
-router.put('/:id', checkIdParam, (req, res) => {
+router.put('/:id', checkIdParam, passport.authenticate('basic', { session: false }), checkHeadTeacher, (req, res) => {
     const id = req.params.id;
     let teachObj = null;
+    if (!req.body.username || !req.body.password) {
+        res.status(400).json({ err: "Put request must have username and password fields!" });
+        return;
+    }
+
     try {
         teachObj = new Teacher(req.body);
         console.log(teachObj);
     } catch (err) {
-        res.status(400).json({ err: "wrong request body" });
+        res.status(400).json({ err });
         return;
     }
     Teacher.update(id, teachObj).then(resTeach => {
@@ -59,15 +75,15 @@ router.put('/:id', checkIdParam, (req, res) => {
         res.status(400).json({ err });
     });
 });
-
-router.post('/', (req, res) => {
+// -----------------------------------------------------------
+router.post('/', passport.authenticate('basic', { session: false }), checkHeadTeacher, (req, res) => {
     let teachObj = null;
-    const salt = process.env.BASIC_AUTH_SALT;
-    if (!salt) {
-        res.status(500).json({ err: "internal server problem" });
+
+    if (!req.body.username || !req.body.password) {
+        res.status(400).json({ err: "Put request must have username and password fields!" });
+        return;
     }
 
-    req.body.password = sha512(req.body.password, salt);
     try {
         teachObj = new Teacher(req.body);
     } catch (err) {

@@ -10,7 +10,12 @@ router.use("/lessons", lessonsRoute);
 
 const teacherRoute = require("./teacher/teacher.js");
 
-router.use("/teacher", teacherRoute);
+router.use("/teachers", teacherRoute);
+
+const studentRoute = require("./student/student.js");
+
+router.use("/students", studentRoute);
+
 
 
 // -----------------------------------------
