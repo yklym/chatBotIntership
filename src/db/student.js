@@ -1,30 +1,30 @@
 const StudentModel = require('../models/studentModel');
 
 class Student {
-    constructor(login, password, grade = 1, fullname = "", lessons = []) {
-
-        this.login = login;
-        this.password = password;
+    constructor( grade = 1, fullname = "", lessons = []) {
         this.grade = grade;
         this.fullname = fullname;
         this.lessons = lessons;
     }
-    
+
     static getAll() {
-        return StudentModel.find().sort({created: -1}).catch((err) => console.log("err in getAll\n" + err));
+        return StudentModel.find().sort({ created: -1 }).catch((err) => console.log("err in getAll\n" + err));
 
     }
 
     static getById(id) {
         return StudentModel.findById(id);
     }
+
     static update(id, newObj) {
         return StudentModel.findByIdAndUpdate(id, newObj);
     }
+
     static insert(student) {
         return new StudentModel(student).save()
             .catch((err) => console.log("erro in user insert\n" + err));
     }
+
     static deleteById(id) {
         return StudentModel.findByIdAndDelete(id);
     }
@@ -41,7 +41,7 @@ class Student {
             login: login
         });
     }
-    
+
     static addSubsription(studId, lessonId) {
         return this.getById(studId)
             .then(st => {
@@ -62,7 +62,7 @@ class Student {
             })
     }
 }
- 
+
 // -----------------------------------------------------------------
 module.exports = Student
 // ------------------------------------------------------------------

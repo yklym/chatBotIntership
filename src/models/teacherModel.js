@@ -6,6 +6,16 @@ const TeacherSchema = new mongoose.Schema({
         type: String,
         default: "-",
     },
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+        unique: true,
+    },
     age: {
         type: Number,
         default: -1,
@@ -20,6 +30,6 @@ const TeacherSchema = new mongoose.Schema({
     },
 });
 
-const TeacherModel = mongoose.model('Charac', TeacherSchema);
+const TeacherModel = mongoose.model('teachers', TeacherSchema);
 
 module.exports = TeacherModel;

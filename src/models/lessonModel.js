@@ -6,7 +6,6 @@ const LessonSchema = new mongoose.Schema({
         type: [mongoose.mongo.ObjectId],
         ref: "Student",
     },
-
     teacher: {
         type: mongoose.mongo.ObjectId,
         ref: "Teacher",

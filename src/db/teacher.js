@@ -1,7 +1,9 @@
 const TeacherModel = require('../models/teacherModel');
 
 class Teacher {
-    constructor(fullname = "", age = -1, role = 0, lessons = []) {
+    constructor({fullname = "", username, password, age = -1, role = 0, lessons = []}) {
+        this.password = password;
+        this.username = username;
         this.fullname = fullname;
         this.age = age;
         this.role = role;
@@ -28,6 +30,12 @@ class Teacher {
 
     static deleteById(id) {
         return TeacherModel.findByIdAndDelete(id);
+    }
+
+    static findByUsername(username) {
+        return TeacherModel.findOne({
+            username : username
+        });
     }
 }
 

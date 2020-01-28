@@ -1,14 +1,6 @@
 const mongoose = require('mongoose');
 
 const StudentSchema = new mongoose.Schema({
-    login: {
-        type: String,
-        required: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
     grade: {
         type: Number,
         default: 1,

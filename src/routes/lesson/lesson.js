@@ -1,17 +1,14 @@
 const express = require("express");
-const busboyBodyParser = require('busboy-body-parser');
+const passport = require("passport");
 const Lesson = require("../../db/lesson.js");
 const { checkIdParam } = require("../../utils.js");
+const { checkTeacher, checkHeadTeacher } = require("../../auth/basic.js");
+
 const router = express.Router();
 router.use(express.json());
 
-
-router.use(busboyBodyParser({
-    limit: '5mb',
-}));
-
-
-router.get("/", (req, res) => {
+router.get("/", passport.authenticate('basic', { session: false }), checkTeacher, (req, res) => {
+    console.log(req.user);
     Lesson.getAll().then(lessons => {
         res.status(200).json(lessons);
     }).catch(err => {
@@ -19,7 +16,7 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get('/:id', checkIdParam, (req, res) => {
+router.get('/:id', passport.authenticate('basic', { session: false }), checkTeacher, checkIdParam, (req, res) => {
     const id = req.params.id;
     Lesson.getById(id).then(lesson => {
         res.status(200).json(lesson);
@@ -30,7 +27,24 @@ router.get('/:id', checkIdParam, (req, res) => {
     });
 });
 
-router.delete("/:id", checkIdParam, (req, res) => {
+router.post('/', passport.authenticate('basic', { session: false }), checkTeacher, (req, res) => {
+    let lessObj = null;
+    try {
+        lessObj = new Lesson(req.body);
+    } catch (err) {
+        res.status(400).json({ err: "wrong request body" });
+        return;
+    }
+    Lesson.insert(lessObj).then(resLes => {
+        res.status(201).json(resLes);
+    }).catch(err => {
+        console.log(err);
+        res.status(400).json({ err });
+    });
+});
+
+// ----------------------------------------------TODO check Teacher's id
+router.delete("/:id", passport.authenticate('basic', { session: false }), checkHeadTeacher, checkIdParam, (req, res) => {
     const id = req.params.id;
     if (!id) {
         res.status(400).json({ err: "No id parametr, or it is incorrect" });
@@ -44,7 +58,7 @@ router.delete("/:id", checkIdParam, (req, res) => {
     });
 });
 
-router.patch('/:id', checkIdParam, (req, res) => {
+router.patch('/:id', passport.authenticate('basic', { session: false }), checkHeadTeacher, checkIdParam, (req, res) => {
     const id = req.params.id;
     Lesson.update(id, req.body).then(resLes => {
         res.status(201).json(resLes);
@@ -54,7 +68,7 @@ router.patch('/:id', checkIdParam, (req, res) => {
     });
 });
 
-router.put('/:id', checkIdParam,(req, res) => {
+router.put('/:id', passport.authenticate('basic', { session: false }), checkTeacher, checkIdParam, (req, res) => {
     const id = req.params.id;
     let lessObj = null;
     try {
@@ -71,23 +85,5 @@ router.put('/:id', checkIdParam,(req, res) => {
         res.status(400).json({ err });
     });
 });
-
-router.post('/', (req, res) => {
-    let lessObj = null;
-    try {
-        lessObj = new Lesson(req.body);
-    } catch (err) {
-        res.status(400).json({ err: "wrong request body" });
-        return;
-    }
-    Lesson.insert(lessObj).then(resLes => {
-        res.status(201).json(resLes);
-    }).catch(err => {
-        console.log(err);
-        res.status(400).json({ err });
-    });
-});
-
-
-// PATCH
+// --------------------------------------------------------------------
 module.exports = router;

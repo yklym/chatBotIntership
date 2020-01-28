@@ -8,6 +8,9 @@ const lessonsRoute = require("./lesson/lesson.js");
 
 router.use("/lessons", lessonsRoute);
 
+const teacherRoute = require("./teacher/teacher.js");
+
+router.use("/teacher", teacherRoute);
 
 
 // -----------------------------------------
