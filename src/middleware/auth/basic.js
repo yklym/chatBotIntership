@@ -1,5 +1,5 @@
-const Teacher = require('../db/teacher');
-const { sha512 } = require('../utils');
+const Teacher = require('../../db/teacher.js');
+const { sha512 } = require('../../utils/utils.js');
 
 
 function myBasicStrat(username, password, done) {
@@ -10,7 +10,7 @@ function myBasicStrat(username, password, done) {
                 message: 'Incorrect username.',
             });
         }
-        if (tch.password !== sha512(password, process.env.BASIC_AUTH_SALT)) {
+        if (tch.password !== sha512(password, process.env.PASS_HASH_SALT)) {
 
             console.log("incorrect pass in LOcal Strategy");
             return done(null, false, {
@@ -41,4 +41,4 @@ module.exports = {
     myBasicStrat,
     checkHeadTeacher,
     checkTeacher,
-}
+};

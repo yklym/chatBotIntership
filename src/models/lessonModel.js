@@ -2,9 +2,9 @@
 const mongoose = require('mongoose');
 
 const LessonSchema = new mongoose.Schema({
-    students: {
-        type: [mongoose.mongo.ObjectId],
-        ref: "Student",
+    group: {
+        type: mongoose.mongo.ObjectId,
+        ref: "Group",
     },
     teacher: {
         type: mongoose.mongo.ObjectId,

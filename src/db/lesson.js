@@ -1,10 +1,10 @@
 const LessonModel = require('../models/lessonModel');
 
 class Lesson {
-    constructor({ name = "", teacher = null, students = [], maxStudentsNumber = 20, lessonNumber = 0 }) {
+    constructor({ name = "", teacher = null, group = null, maxStudentsNumber = 20, lessonNumber = 0 }) {
         this.name = name;
         this.teacher = teacher;
-        this.students = students;
+        this.group = group;
         this.maxStudentsNumber = maxStudentsNumber;
         this.lessonNumber = lessonNumber;
     }

@@ -16,6 +16,6 @@ const GroupSchema = new mongoose.Schema({
 
 });
 
-const GroupModel = mongoose.model('Student', GroupSchema);
+const GroupModel = mongoose.model('Group', GroupSchema);
 
 module.exports = GroupModel;

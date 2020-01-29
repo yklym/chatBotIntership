@@ -1,9 +1,9 @@
 const TeacherModel = require('../models/teacherModel');
-const { sha512 } = require("./../utils.js");
+const { sha512 } = require("../utils/utils.js");
 
 class Teacher {
     constructor({ fullname = "", username, password, age = 0, role = 0, lessons = [] }) {
-        const salt = process.env.BASIC_AUTH_SALT;
+        const salt = process.env.PASS_HASH_SALT;
         if (!salt) {
             throw new Error("Internal server error");
         }

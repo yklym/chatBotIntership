@@ -16,7 +16,9 @@ const studentRoute = require("./student/student.js");
 
 router.use("/students", studentRoute);
 
+const groupRoute = require("./group/group.js");
 
+router.use("/groups", groupRoute);
 
 // -----------------------------------------
 module.exports = router;
