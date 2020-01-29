@@ -13,9 +13,7 @@ const getById = (req, res) => {
     Lesson.getById(id).then(lesson => {
         res.status(200).json(lesson);
     }).catch(err => {
-        // console.log(err);
-        // or should i use status 500?
-        res.status(400).json(err);
+        res.status(500).json(err);
     });
 };
 
@@ -24,29 +22,28 @@ const insert = (req, res) => {
     try {
         lessObj = new Lesson(req.body);
     } catch (err) {
-        res.status(400).json({ err: "wrong request body" });
+        res.status(400).json(new Error("wrong request body"));
         return;
     }
     Lesson.insert(lessObj).then(resLes => {
         res.status(201).json(resLes);
     }).catch(err => {
-        console.log(err);
-        res.status(400).json({ err });
+        res.status(500).json({ err });
     });
 };
 
 // ----------------------------------------------TODO check Teacher's id
+// TODO Upgrade deletion
 const _delete = (req, res) => {
     const id = req.params.id;
     if (!id) {
-        res.status(400).json({ err: "No id parametr, or it is incorrect" });
+        res.status(400).json(new Error("No id parametr, or it is incorrect"));
         return;
     }
     Lesson.deleteById(id).then(lesson => {
         res.status(200).json(lesson);
     }).catch(err => {
-        // or should i use status 500?
-        res.status(400).json(err);
+        res.status(500).json(err);
     });
 };
 
@@ -55,8 +52,7 @@ const patch = (req, res) => {
     Lesson.update(id, req.body).then(resLes => {
         res.status(201).json(resLes);
     }).catch(err => {
-        console.log(err);
-        res.status(400).json({ err });
+        res.status(500).json(err);
     });
 };
 
@@ -65,16 +61,14 @@ const update = (req, res) => {
     let lessObj = null;
     try {
         lessObj = new Lesson(req.body);
-        console.log(lessObj);
     } catch (err) {
-        res.status(400).json({ err: "wrong request body" });
+        res.status(400).json(new Error("wrong request body"));
         return;
     }
     Lesson.update(id, lessObj).then(resLes => {
         res.status(201).json(resLes);
     }).catch(err => {
-        console.log(err);
-        res.status(400).json({ err });
+        res.status(500).json(err);
     });
 };
 // --------------------------------------------------------------------

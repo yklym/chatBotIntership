@@ -1,6 +1,6 @@
 const express = require("express");
 const Teacher = require("../../db/teacher.js");
-const { checkIdParam } = require("../../middleware/utils.js");
+const { checkIdParam, checkForLoginData } = require("../../middleware/utils.js");
 const { checkTeacher, checkHeadTeacher } = require("../../middleware/auth/basic.js");
 const { checkBasicAuth } = require("../../middleware/utils.js");
 const controllers = require("../../controllers/teacher/teacher.js");
@@ -19,8 +19,8 @@ router.delete("/:id", checkIdParam, checkBasicAuth, checkHeadTeacher, controller
 
 router.patch('/:id', checkIdParam, checkBasicAuth, checkHeadTeacher, controllers.patch);
 
-router.put('/:id', checkIdParam, checkBasicAuth, checkHeadTeacher, controllers.update);
+router.put('/:id', checkIdParam, checkBasicAuth, checkHeadTeacher, checkForLoginData, controllers.update);
 // -----------------------------------------------------------
-router.post('/', checkBasicAuth, checkHeadTeacher, controllers.insert);
+router.post('/', checkBasicAuth, checkHeadTeacher, checkForLoginData, controllers.insert);
 
 module.exports = router;

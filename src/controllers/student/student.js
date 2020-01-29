@@ -14,7 +14,7 @@ const getById = (req, res) => {
     Student.getById(id).then(students => {
         res.status(200).json(students);
     }).catch(err => {
-        res.status(400).json(err);
+        res.status(500).json(err);
     });
 };
 
@@ -23,13 +23,13 @@ const insert = (req, res) => {
     try {
         studObj = new Student(req.body);
     } catch (err) {
-        res.status(400).json({ err: "wrong request body" });
+        res.status(400).json(new Error("wrong request body"));
         return;
     }
     Student.insert(studObj).then(resStud => {
         res.status(201).json(resStud);
     }).catch(err => {
-        res.status(400).json({ err });
+        res.status(500).json(err);
     });
 };
 
@@ -38,7 +38,7 @@ const _delete = (req, res) => {
     Student.deleteById(id).then(students => {
         res.status(200).json(students);
     }).catch(err => {
-        res.status(400).json(err);
+        res.status(500).json(err);
     });
 };
 
@@ -47,7 +47,7 @@ const patch = (req, res) => {
     Student.update(id, req.body).then(resStud => {
         res.status(201).json(resStud);
     }).catch(err => {
-        res.status(400).json({ err });
+        res.status(500).json(err);
     });
 };
 
@@ -57,17 +57,21 @@ const update = (req, res) => {
     try {
         lessObj = new Student(req.body);
     } catch (err) {
-        res.status(400).json({ err: "wrong request body" });
+        res.status(400).json(new Error("wrong request body)"));
         return;
     }
     Student.update(id, lessObj).then(resStud => {
         res.status(201).json(resStud);
     }).catch(err => {
-        res.status(400).json({ err });
+        res.status(500).json(err);
     });
 };
 
-// TODO Advanced Routers
+
+// Move to group
+// Add lesons
+// Remove Lesson
+// Get group
 module.exports = {
     delete: _delete,
     insert,

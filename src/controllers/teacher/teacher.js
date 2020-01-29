@@ -18,22 +18,21 @@ const getAll = (req, res) => {
     });
 };
 
-// ------------------------------------------------ CHeck Id
 const getById = (req, res) => {
     const id = req.params.id;
     Teacher.getById(id).then(teacher => {
         res.status(200).json(teacher);
     }).catch(err => {
-        res.status(400).json(err);
+        res.status(500).json(err);
     });
 };
-
+// No need to delete subscriptions
 const _delete = (req, res) => {
     const id = req.params.id;
     Teacher.deleteById(id).then(teacher => {
         res.status(200).json(teacher);
     }).catch(err => {
-        res.status(400).json(err);
+        res.status(500).json(err);
     });
 };
 
@@ -42,56 +41,49 @@ const patch = (req, res) => {
     if (req.body.password) {
         req.body.password = sha512(req.body.password, process.env.PASS_HASH_SALT);
     }
-
     Teacher.update(id, req.body).then(resTeach => {
         res.status(201).json(resTeach);
     }).catch(err => {
-        res.status(400).json({ err });
+        res.status(500).json({ err });
     });
 };
 
 const update = (req, res) => {
     const id = req.params.id;
     let teachObj = null;
-    if (!req.body.username || !req.body.password) {
-        res.status(400).json({ err: "Put request must have username and password fields!" });
-        return;
-    }
+
     try {
         teachObj = new Teacher(req.body);
     } catch (err) {
-        res.status(400).json({ err });
+        res.status(500).json(err);
         return;
     }
     Teacher.update(id, teachObj).then(resTeach => {
         res.status(201).json(resTeach);
     }).catch(err => {
-        res.status(400).json({ err });
+        res.status(500).json(err);
     });
 };
-// -----------------------------------------------------------
+
 const insert = (req, res) => {
     let teachObj = null;
-
-    if (!req.body.username || !req.body.password) {
-        res.status(400).json({ err: "Put request must have username and password fields!" });
-        return;
-    }
-
     try {
         teachObj = new Teacher(req.body);
     } catch (err) {
-        res.status(400).json({ err: "wrong request body" });
+        res.status(500).json(err);
         return;
     }
 
     Teacher.insert(teachObj).then(resTeach => {
         res.status(201).json(resTeach);
     }).catch(err => {
-        console.log(err);
-        res.status(400).json({ err });
+        res.status(500).json({ err });
     });
 };
+
+// Get lessons
+// Unsubscribe from lessons
+// Make Head Teacher
 
 module.exports = {
     getMe,

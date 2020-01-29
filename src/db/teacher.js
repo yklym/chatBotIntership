@@ -2,7 +2,7 @@ const TeacherModel = require('../models/teacherModel');
 const { sha512 } = require("../utils/utils.js");
 
 class Teacher {
-    constructor({ fullname = "", username, password, age = 0, role = 0, lessons = [] }) {
+    constructor({ fullname = "", username, password, age = 0, role = 0 }) {
         const salt = process.env.PASS_HASH_SALT;
         if (!salt) {
             throw new Error("Internal server error");
@@ -13,7 +13,6 @@ class Teacher {
         this.fullname = fullname;
         this.age = age;
         this.role = role;
-        this.lessons = lessons;
     }
 
     static insert(teacher) {

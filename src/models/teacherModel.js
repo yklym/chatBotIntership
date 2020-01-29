@@ -23,10 +23,6 @@ const TeacherSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    lessons: {
-        type: [mongoose.mongo.ObjectId],
-        ref: "Lesson",
-    },
 });
 
 const TeacherModel = mongoose.model('teachers', TeacherSchema);

@@ -14,23 +14,24 @@ const getById = (req, res) => {
     Group.getById(id).then(groups => {
         res.status(200).json(groups);
     }).catch(err => {
-        res.status(400).json(err);
+        res.status(500).json(err);
     });
 };
 
 const insert = (req, res) => {
     let groupObj = null;
+
     try {
         groupObj = new Group(req.body);
     } catch (err) {
-        res.status(400).json({ err });
+        res.status(500).json(err);
         return;
     }
 
     Group.insert(groupObj).then(resGroup => {
         res.status(201).json(resGroup);
     }).catch(err => {
-        res.status(400).json({ err });
+        res.status(500).json({ err });
     });
 };
 
@@ -39,7 +40,7 @@ const _delete = (req, res) => {
     Group.deleteById(id).then(groups => {
         res.status(200).json(groups);
     }).catch(err => {
-        res.status(400).json(err);
+        res.status(500).json(err);
     });
 };
 
@@ -48,7 +49,7 @@ const patch = (req, res) => {
     Group.update(id, req.body).then(resGroup => {
         res.status(201).json(resGroup);
     }).catch(err => {
-        res.status(400).json(err);
+        res.status(500).json(err);
     });
 };
 
@@ -68,6 +69,8 @@ const update = (req, res) => {
     });
 };
 
+// Append students
+// rm students
 
 // TODO Advanced Routers
 module.exports = {
