@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
 const express = require('express');
 const path = require("path");
 const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
 const busboyBodyParser = require('busboy-body-parser');
+const connectDb = require('./db/db.js');
 require('dotenv').config({ path: path.resolve(__dirname, 'config/.env') });
 
 const app = express();
@@ -26,19 +26,12 @@ app.get('*', (req, res) => {
 });
 
 // @part Running-------------------------------------------------------
-const dbUrl = process.env.MONGODB_URI;
-// || 'mongodb://localhost:27017/internship';
-const connectOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-};
-
-mongoose.connect(dbUrl, connectOptions)
-    .then(() => console.log('Mongo database connected'))
-    .catch(() => console.log('ERROR: Mongo database not connected'));
-
-const port = process.env.PORT;
-// || 5000;
+try {
+    connectDb();
+    console.log("database connected");
+} catch (err) {
+    console.log(err);
+    process.exit(1);
+}
+const port = process.env.PORT;// 5000
 app.listen(port, () => console.log(`App is listening on port ${port}`));
