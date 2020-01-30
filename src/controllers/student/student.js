@@ -23,7 +23,7 @@ const insert = (req, res) => {
     try {
         studObj = new Student(req.body);
     } catch (err) {
-        res.status(400).json(new Error("wrong request body"));
+        res.status(400).json({ err: "wrong request bod" });
         return;
     }
     Student.insert(studObj).then(resStud => {
@@ -57,7 +57,7 @@ const update = (req, res) => {
     try {
         lessObj = new Student(req.body);
     } catch (err) {
-        res.status(400).json(new Error("wrong request body)"));
+        res.status(400).json({ err: "wrong request bod" });
         return;
     }
     Student.update(id, lessObj).then(resStud => {
@@ -68,10 +68,6 @@ const update = (req, res) => {
 };
 
 
-// Move to group
-// Add lesons
-// Remove Lesson
-// Get group
 module.exports = {
     delete: _delete,
     insert,

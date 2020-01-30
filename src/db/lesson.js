@@ -18,7 +18,6 @@ class Lesson {
     }
 
     static update(id, newObj) {
-        console.log(newObj);
         return LessonModel.findByIdAndUpdate(id, newObj);
     }
 

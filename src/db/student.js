@@ -27,26 +27,6 @@ class Student {
     static deleteById(id) {
         return StudentModel.findByIdAndDelete(id);
     }
-
-    static addSubsription(studId, lessonId) {
-        return this.getById(studId)
-            .then(st => {
-                if (!st.lessons.includes(lessonId)) {
-                    st.lessons.push(lessonId);
-                }
-                return this.update(studId, st);
-            });
-    }
-
-    static deleteSubsription(studId, lessonId) {
-        return this.getById(studId)
-            .then(st => {
-                if (st.lessons.includes(lessonId)) {
-                    st.lessons.splice(st.lessons.indexOf(lessonId), 1);
-                }
-                return this.update(studId, st);
-            });
-    }
 }
 
 module.exports = Student;

@@ -22,16 +22,14 @@ const apiRoute = require("./routes/index");
 app.use("/api", apiRoute);
 
 app.get('*', (req, res) => {
-    res.status(404).json({ error: "wrong api route" });
+    res.status(404).json({ err: "wrong api route" });
 });
 
-// @part Running-------------------------------------------------------
-try {
-    connectDb();
-    console.log("database connected");
-} catch (err) {
+
+connectDb(process.env.MONGODB_URI).then(() => {
+    const port = process.env.PORT || 5000;// 5000
+    app.listen(port, () => console.log(`App is listening on port ${port}`));
+}).catch(err => {
     console.log(err);
     process.exit(1);
-}
-const port = process.env.PORT;// 5000
-app.listen(port, () => console.log(`App is listening on port ${port}`));
+});

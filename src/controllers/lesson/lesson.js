@@ -22,7 +22,7 @@ const insert = (req, res) => {
     try {
         lessObj = new Lesson(req.body);
     } catch (err) {
-        res.status(400).json(new Error("wrong request body"));
+        res.status(400).json({ err: "wrong request bod" });
         return;
     }
     Lesson.insert(lessObj).then(resLes => {
@@ -37,7 +37,7 @@ const insert = (req, res) => {
 const _delete = (req, res) => {
     const id = req.params.id;
     if (!id) {
-        res.status(400).json(new Error("No id parametr, or it is incorrect"));
+        res.status(400).json({ err: "No id parametr, or it is incorrect" });
         return;
     }
     Lesson.deleteById(id).then(lesson => {
@@ -62,7 +62,7 @@ const update = (req, res) => {
     try {
         lessObj = new Lesson(req.body);
     } catch (err) {
-        res.status(400).json(new Error("wrong request body"));
+        res.status(400).json({ err: "wrong request bod" });
         return;
     }
     Lesson.update(id, lessObj).then(resLes => {
